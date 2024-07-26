@@ -1,0 +1,18 @@
+@import '~@circlon/angular-tree-component/css/angular-tree-component.css';
+
+.tree-node-content {
+  //display: flex;
+  justify-content: space-between;
+
+  button {
+    margin-left: 5px;
+  }
+}
+  .node-content-wrapper {
+    width: 100%;
+
+    .d-flex {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }

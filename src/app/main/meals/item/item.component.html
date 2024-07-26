@@ -1,0 +1,192 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- Basic Alerts start -->
+        <section id="sample-page">
+            <div class="card">
+                <div class="row">
+                    <div class="col-12 mb-50 ">
+                        <button class="btn btn-primary mt-2 ml-2" (click)="modalOpenForm(modalForm,null)">
+                            <span class="d-sm-inline-block">Add Item</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">Show
+                                <select class="form-control mx-25" (change)="changeLimit()"
+                                        [(ngModel)]="pageDetail.pageSize">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                        <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                            <label class="d-flex align-items-center">Search</label>
+                            <input type="search"
+                                   (search)="filterUpdate($event)"
+                                   (keyup)="filterUpdate($event)"
+                                   [(ngModel)]="pageDetail.searchText"
+                                   placeholder="Search"
+                                   class="form-control ml-25"/>
+                        </div>
+                    </div>
+                </div>
+                <!--                <div class="table-responsive">-->
+                <!--                    <table class="table">-->
+                <!--                        <thead>-->
+                <!--                        <tr>-->
+                <!--                            <th>Name</th>-->
+                <!--                            <th>Category</th>-->
+                <!--                            <th>Status</th>-->
+                <!--                            <th>Action</th>-->
+                <!--                        </tr>-->
+                <!--                        </thead>-->
+                <!--                        <tbody>-->
+                <!--                        <tr *ngFor="let item of items ">-->
+                <!--                            <td>{{item.name}}</td>-->
+                <!--                            <td>{{item.categories_id.name}}</td>-->
+                <!--                            <td>{{item.status ? 'Active' : 'InActive'}}</td>-->
+
+                <!--                            <td class="overflow-hidden">-->
+                <!--                                <a (click)="modalOpenForm(modalForm,item)" href="javascript:void(0);"><i-->
+                <!--                                        data-feather="edit" class="mr-50"></i></a>-->
+                <!--                                <a href="javascript:void(0);" [swal]="SweetAlertConfirmText"><i-->
+                <!--                                        data-feather="trash-2" class="mr-50"></i></a>-->
+                <!--                                <swal #SweetAlertConfirmText (open)="itemDelete(item._id)"></swal>-->
+                <!--                            </td>-->
+                <!--                        </tr>-->
+
+                <!--                        </tbody>-->
+                <!--                    </table>-->
+                <!--                </div>-->
+                <!--                <div class="col-md-12">-->
+                <!--                    <ngb-pagination-->
+                <!--                            class="d-flex justify-content-end"-->
+                <!--                            [collectionSize]="total"-->
+                <!--                            [(page)]="pageDetail.page"-->
+                <!--                            [pageSize]="pageDetail.pageSize"-->
+                <!--                            aria-label="Default pagination"-->
+                <!--                            (pageChange)="filterUpdate()"-->
+                <!--                    >-->
+                <!--                    </ngb-pagination>-->
+                <!--                </div>-->
+                <ngx-datatable
+                        class="bootstrap core-bootstrap"
+                        [rows]="items"
+                        [rowHeight]="50"
+                        [limit]="pageDetail.pageSize"
+                        [count]="total"
+                        [offset]="pageDetail.page-1"
+                        [columnMode]="ColumnMode.flex"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [externalPaging]="true"
+                        [externalSorting]="true"
+                        (sort)="filterUpdate($event)"
+                        (page)="filterUpdate($event)"
+                >
+                    <ngx-datatable-column name="NAME" prop="name" [flexGrow]="2"></ngx-datatable-column>
+                    <ngx-datatable-column name="CATEGORY NAME" prop="categories_id.name"  [flexGrow]="2"></ngx-datatable-column>
+                    <ngx-datatable-column name="STATUS" prop="status" [flexGrow]="1">
+                        <ng-template let-status="value" ngx-datatable-cell-template>
+                            <span *ngIf="status" class="badge badge-pill badge-light-primary mr-1">Active</span>
+                            <span *ngIf="!status" class="badge badge-pill badge-light-danger mr-1">InActive</span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actions" [width]="40" [sortable]="false" [flexGrow]="1">
+                        <ng-template let-row="row" let-column="column" ngx-datatable-cell-template>
+                            <a (click)="modalOpenForm(modalForm,row)" href="javascript:void(0);">
+                                <i data-feather="edit" class="mr-50"></i>
+                            </a>
+                            <a href="javascript:void(0);" [swal]="SweetAlertConfirmText">
+                                <i data-feather="trash-2" class="mr-50"></i>
+                            </a>
+                            <swal #SweetAlertConfirmText (open)="itemDelete(row._id)"></swal>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+                <ng-template #modalForm let-modal>
+                    <div class="modal-header">
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click');reset()"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" tabindex="0" ngbAutofocus>
+                        <form [formGroup]="ItemForm" class="form-validate" (ngSubmit)="itemDetails()">
+
+                            <div class="form-group">
+                                <label for="itemName">Item Name*</label>
+                                <input type="text" id="itemName" class="form-control"
+                                       placeholder=" Please Enter Item Name"
+                                       required
+                                       formControlName="name" [ngClass]="{'is-invalid': ItemForm.controls.name.invalid  &&
+                                            ItemForm.controls.name.touched}"/>
+                                <div
+                                        class="invalid-feedback">
+
+                                    Name is required
+
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryname">Category Name </label>
+                                <select class="form-control" id="categoryname" formControlName="categories_id"
+                                        [ngClass]="{'is-invalid': ItemForm.controls.categories_id.invalid  &&
+                                            ItemForm.controls.categories_id.touched}" required>
+
+                                    <option value="">Select Category</option>
+                                    <option *ngFor="let category of categories" [value]="category._id">
+                                        {{category.name}}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Category is required
+                                </div>
+                            </div>
+
+                            <label for="status">Status</label>
+                            <div class="form-group">
+                                <!-- <input formControlName="status" id="status" type="checkbox"> -->
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadio1"
+                                           formControlName="status"
+                                           [value]="true"
+
+                                           class="custom-control-input"/>
+                                    <label class="custom-control-label" for="customRadio1">Active</label>
+                                </div>
+
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadio2" [value]="false"
+                                           formControlName="status"
+
+                                           class="custom-control-input"/>
+                                    <label class="custom-control-label" for="customRadio2">InActive</label>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button [disabled]="!ItemForm.valid" type="submit" class="btn btn-primary mr-1">
+                                    Submit
+                                </button>
+                                <button type="button" (click)="modal.dismiss('Cross click') ; reset()"
+                                        class="btn btn-secondary">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </ng-template>
+            </div>
+        </section>
+
+    </div>
+</div>

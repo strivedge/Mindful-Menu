@@ -1,0 +1,113 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Basic Alerts start -->
+    <section id="sample-page">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="row">
+              <!-- <div class="col-12 mb-50">
+
+              </div> -->
+              <div class="col-md-6 col-12">
+                <div class="d-flex justify-content-between align-items-center m-1">
+                  <label class="d-flex align-items-center">Show
+                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    entries</label>
+                </div>
+              </div>
+              <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                  <label class="d-flex align-items-center">Search<input type="search" placeholder="Search"
+                      class="form-control ml-25" (keyup)="filterUpdate($event)"
+                      (search)="filterUpdate($event)" /></label>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Date Of Birth</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of userData">
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.dob | date :'yyyy-MM-dd'}}</td>
+                    <td *ngIf="user.status"><span class="badge badge-pill badge-light-primary mr-1">Active</span></td>
+                    <td *ngIf="!user.status"><span class="badge badge-pill badge-light-danger mr-1">InActive</span></td>
+                    <td class="overflow-hidden">
+                      <a ngbDropdownItem href="javascript:void(0);" (click)="modalOpenForm(modalForm,user)"><i
+                          data-feather="edit-2" class="mr-50"></i><span></span></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <ng-template #modalForm let-modal>
+              <div class="modal-header">
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" tabindex="0" ngbAutofocus>
+                <form [formGroup]="userForm" autocomplete="true" (ngSubmit)="onSubmitConfirm()">
+                  <label>First Name </label>
+                  <div class="form-group">
+                    <input type="text" placeholder="First Name" class="form-control" formControlName="first_name" />
+                  </div>
+                  <label>Last Name</label>
+                  <div class="form-group">
+                    <input type="text" placeholder="Last Name" class="form-control" formControlName="last_name"/>
+                  </div>
+                  <label>Email</label>
+                  <div class="form-group">
+                    <input type="email" placeholder="Email" class="form-control" formControlName="email"/>
+                  </div>
+                  <label>Date of Birth</label>
+                  <div class="form-group">
+                    <input type="date" placeholder="Date of Birth" class="form-control" formControlName="dob"[value]="value |date:'yyyy-MM-dd'"/>
+                  </div>
+                  <label>Status</label>
+                  <div class="form-group">
+                    
+                    <input formControlName="status" type="checkbox">
+                    <span class="slider round"></span>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary mr-1">
+                  Submit
+                </button>
+                <button type="reset"  class="btn btn-secondary">
+                  Cancel
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic Alerts end -->
+  </div>
+</div>

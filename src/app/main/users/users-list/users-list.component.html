@@ -1,0 +1,104 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section id="user-list" class="users-list-wrapper">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-12 col-12 mt-1">
+                        <a csvLink [data]="csvData" class="btn btn-outline-secondary float-right mr-1" rippleEffect
+                        >Export CSV</a
+                        >
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">Show
+                                <select class="form-control mx-25" [(ngModel)]="pageDetail.pageSize"
+                                        (change)="changeLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                        <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                            <label class="d-flex align-items-center">Search</label>
+                            <input type="search"
+                                   placeholder="Search"
+                                   class="form-control ml-25"
+                                   (keyup)="filterUpdate($event)"
+                                   (search)="filterUpdate($event)"
+                                   [(ngModel)]="pageDetail.searchText"/>
+                        </div>
+                    </div>
+                </div>
+                <ngx-datatable
+                        class="bootstrap core-bootstrap"
+                        [rows]="userData"
+                        [rowHeight]="'auto'"
+                        [limit]="pageDetail.pageSize"
+                        [count]="total"
+                        [offset]="pageDetail.page-1"
+                        [columnMode]="ColumnMode.force"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [scrollbarH]="true"
+                        [externalPaging]="true"
+                        [externalSorting]="true"
+                        [summaryRow]="true"
+                        [summaryPosition]="'top'"
+                        [summaryHeight]="70"
+                        (sort)="filterUpdate($event)"
+                        [sorts]="sort"
+                        (page)="filterUpdate($event)"
+                >
+                    <ngx-datatable-column name="FIRST NAME" prop="first_name" [width]="100"></ngx-datatable-column>
+                    <ngx-datatable-column name="LAST NAME" prop="last_name" [width]="100"></ngx-datatable-column>
+                    <ngx-datatable-column name="EMAIL" prop="email" [width]="200"></ngx-datatable-column>
+                    <ngx-datatable-column name="SIGNUP DATE" prop="createdAt" [width]="150">
+                        <ng-template let-signup="value" ngx-datatable-cell-template>
+                            {{signup|date:"mediumDate":"UTC"}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="SUB STATUS" prop="user_sub_status" [width]="200"
+                                          [summaryTemplate]="subTypeSummaryCell"></ngx-datatable-column>
+                    <ngx-datatable-column name="STATUS" prop="status" [width]="100">
+                        <ng-template let-status="value" ngx-datatable-cell-template>
+
+                            <span *ngIf="status" class="badge badge-pill badge-light-primary mr-1">Active</span>
+
+                            <span *ngIf="!status" class="badge badge-pill badge-light-danger mr-1">InActive</span>
+
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actions" [width]="40" [sortable]="false">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <a routerLink="/users/user-details/{{row._id}}"><i data-feather="eye"
+                                                                               class="mr-50"></i></a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+                <ng-template #subTypeSummaryCell>
+                    <div class="form-group mb-0">
+                        <ng-select [items]="subType"
+                                   [clearable]="true"
+                                   class="ng-select-size-sm"
+                                   bindValue="id"
+                                   bindLabel="name"
+                                   appendTo="body"
+                                   [dropdownPosition]="'bottom'"
+                                   [placeholder]="'Select Sub Type'"
+                                   [(ngModel)]="selectedSubType"
+                                   (change)="filterUpdate()"
+                                   style="min-width: 170px"
+                        >
+                        </ng-select>
+                    </div>
+                </ng-template>
+            </div>
+        </section>
+    </div>
+</div>

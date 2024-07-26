@@ -1,0 +1,84 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- content-body component -->
+        <section id="meal-list">
+            <div class="card">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary mt-2 ml-2" rippleEffect
+                                routerLink="/weekly-menu/add-edit/add">
+                            <span class="d-sm-inline-block">Add Weekly Menu</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">Show
+                                <select class="form-control mx-1" (change)="changeLimit()"
+                                        [(ngModel)]="pageDetail.pageSize">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries</label>
+                        </div>
+                    </div>
+                </div>
+
+                <ngx-datatable
+                        class="bootstrap core-bootstrap"
+                        [rows]="weeklyMenu"
+                        [rowHeight]="'auto'"
+                        [limit]="pageDetail.pageSize"
+                        [count]="total"
+                        [offset]="pageDetail.page-1"
+                        [columnMode]="ColumnMode.force"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [scrollbarH]="true"
+                        [externalPaging]="true"
+                        [externalSorting]="true"
+                        (sort)="filterUpdate($event)"
+                        [sorts]="sort"
+                        (page)="filterUpdate($event)"
+                >
+                    <ngx-datatable-column name="Image" prop="image_url" [width]="30" [sortable]="false">
+                        <ng-template let-imageUrl="value" let-row="row" ngx-datatable-cell-template>
+                            <div class="avatar avatar-xl">
+                                <img src="{{ this.imgPath +(imageUrl?imageUrl:row['meals'][0]['image_url']) }}" alt="weekly Meal Image"
+                                     onerror="this.src='assets/images/default-images/meal-default.png'">
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Start Date" prop="start_date" [width]="80">
+                        <ng-template let-start="value" ngx-datatable-cell-template>
+                            {{start|date:"mediumDate":"UTC"}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="End Date" prop="end_date" [width]="80">
+                        <ng-template let-end="value" ngx-datatable-cell-template>
+                            {{end|date:"mediumDate":"UTC"}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Publish Date" prop="publish_date" [width]="80">
+                        <ng-template let-publish="value" ngx-datatable-cell-template>
+                            {{publish|date:"mediumDate":"UTC"}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actions" [width]="40" [sortable]="false">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <a href="javascript:void(0);" routerLink="/weekly-menu/add-edit/{{row['_id']}}"><i
+                                    data-feather="edit" class="mr-50"></i></a>
+                            <a href="javascript:void(0);" [swal]="SweetAlertConfirmText"><i
+                                    data-feather="trash-2" class="mr-50"></i></a>
+                            <swal #SweetAlertConfirmText (open)="deleteMenu(row['_id'])"></swal>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </section>
+    </div>
+</div>

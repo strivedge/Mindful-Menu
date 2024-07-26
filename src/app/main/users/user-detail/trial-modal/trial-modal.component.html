@@ -1,0 +1,53 @@
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel1">Edit Trial</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <form [formGroup]="trialForm" class="form-validate" (ngSubmit)="addTrial()">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label><b>Start date</b></label>
+                        <ng2-flatpickr #startPicker
+                                       placeholder="select start date"
+                                       formControlName="startDate"
+                                       [ngClass]="{'is-invalid': trialForm.controls.startDate.invalid}"
+                                       [config]="startDateOptions">
+                        </ng2-flatpickr>
+                        <div class="invalid-feedback" *ngIf="trialForm.controls.startDate.invalid">
+                            Start Date is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label><b>End Date</b></label>
+                        <ng2-flatpickr #endPicker
+                                       placeholder="select end date"
+                                       formControlName="endDate"
+                                       [ngClass]="{'is-invalid': trialForm.controls.endDate.invalid}"
+                                       [config]="endDateOptions">
+                        </ng2-flatpickr>
+                        <div class="invalid-feedback" *ngIf="trialForm.controls.endDate.invalid">
+                            End Date is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit"
+                        class="btn btn-primary mr-1" >
+                    Submit
+                </button>
+                <button type="button" (click)="modal.dismiss('Cross click')"
+                        class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </div>

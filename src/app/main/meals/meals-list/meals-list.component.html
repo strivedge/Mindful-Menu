@@ -1,0 +1,152 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <section id="meal-list">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-12 col-12 mt-1">
+                        <a csvLink [data]="mealCsvData" [headers]="csvHeaders" class="btn btn-outline-secondary float-right mr-1" rippleEffect
+                        >Export CSV</a
+                        >
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary mt-2 ml-2" rippleEffect
+                                routerLink="/meals/add-update/add">
+                            <span class="d-sm-inline-block">Add Meal</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">Show
+                                <select class="form-control mx-30" (change)="changeLimit()"
+                                        [(ngModel)]="pageDetail.pageSize">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 ">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group" style="width: 200px">
+                                    <ng-select *ngIf="items.map"
+                                               [items]="items"
+                                               appendTo="body"
+                                               bindValue="_id"
+                                               bindLabel="name"
+                                               [placeholder]="'Filter by item name'"
+                                               [(ngModel)]="selectedItem"
+                                               (search)="getItems($event)"
+                                               (change)="filterUpdate($event,'select')">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                    <label class="d-flex align-items-center">Search</label>
+                                    <input type="search"
+                                           (search)="filterUpdate($event)"
+                                           (keyup)="filterUpdate($event)"
+                                           [(ngModel)]="pageDetail.searchText"
+                                           placeholder="Search"
+                                           class="form-control ml-25"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <ngx-datatable
+                        class="bootstrap core-bootstrap"
+                        [rows]="meals"
+                        [rowHeight]="'auto'"
+                        [limit]="pageDetail.pageSize"
+                        [count]="total"
+                        [offset]="pageDetail.page-1"
+                        [columnMode]="ColumnMode.flex"
+                        [headerHeight]="100"
+                        [footerHeight]="50"
+                        [externalPaging]="true"
+                        [externalSorting]="true"
+                        [summaryRow]="true"
+                        [summaryPosition]="'top'"
+                        [summaryHeight]="'auto'"
+                        [scrollbarH]="true"
+                        (sort)="filterUpdate($event)"
+                        (page)="filterUpdate($event)"
+                >
+                    <ngx-datatable-column name="MEAL IMAGE" prop="image_url" [sortable]="false" [flexGrow]="1">
+                        <ng-template let-imageLink="value" ngx-datatable-cell-template>
+                            <div class="avatar avatar-lg">
+                                <img src="{{ this.imgPath+imageLink}}" alt="meal image" onerror="this.src='assets/images/default-images/meal-default.png'">
+<!--                                <img src="assets/images/default-images/meal-default.png" alt="meal image" >-->
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="MEAL NAME" prop="name" [flexGrow]="2"></ngx-datatable-column>
+                    <ngx-datatable-column name="LAST USED" prop="last_used" [flexGrow]="2">
+                        <ng-template let-lastUsed="value" ngx-datatable-cell-template>
+                            <span>{{lastUsed | date:"mediumDate":"UTC"}}</span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="DIET TYPE" [sortable]="false" [flexGrow]="2"
+                                          [summaryTemplate]="nameSummaryCell">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="avatar-group">
+                                <div *ngIf="row.is_gluten_free" class="avatar bg-light-primary pull-up">
+                                    <div class="avatar-content  ">GF</div>
+                                </div>
+                                <div *ngIf="row.is_dairy_free" class="avatar bg-light-info pull-up ">
+                                    <div class="avatar-content">DF</div>
+                                </div>
+                                <div *ngIf="row.is_vegetarian" class="avatar bg-light-success pull-up">
+                                    <div class="avatar-content">V</div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="STATUS" prop="status" [flexGrow]="1">
+                        <ng-template let-status="value" ngx-datatable-cell-template>
+                            <span *ngIf="status" class="badge badge-pill badge-light-primary mr-1">Active</span>
+                            <span *ngIf="!status" class="badge badge-pill badge-light-danger mr-1">InActive</span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actions" [sortable]="false" [flexGrow]="1">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <a routerLink="/meals/add-update/{{row._id}}" href="javascript:void(0);"><i
+                                    data-feather="edit" class="mr-50"></i>
+                            </a>
+                            <a href="javascript:void(0);" [swal]="SweetAlertConfirmText"><i
+                                    data-feather="trash-2" class="mr-50"></i></a>
+                            <swal #SweetAlertConfirmText (open)="deleteMeal(row._id)"></swal>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+                <ng-template #nameSummaryCell>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group" >
+                                <ng-select [items]="dietTypes"
+                                           [multiple]="true"
+                                           [clearable]="false"
+                                           class="ng-select-size-sm"
+                                           bindValue="id"
+                                           bindLabel="name"
+                                           [placeholder]="'Select Diet Type'"
+                                           [(ngModel)]="selectedDietTypes"
+                                           (change)="filterUpdate()">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </section>
+    </div>
+</div>

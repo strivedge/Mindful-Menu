@@ -1,0 +1,262 @@
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            Nutrition
+        </h4>
+    </div>
+    <div class="col-md-8">
+        <form class="form form-horizontal" [formGroup]="form">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-sm-3 col-form-label">
+                            <label>Serving per container</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" id="serving-per-container" class="form-control" name="serving-per"
+                                   placeholder="Enter serving per container"
+                                   formControlName="serves_per_container"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-sm-3 col-form-label">
+                            <label>Serving size</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" id="serving-size" class="form-control" name="serving-size-id"
+                                   placeholder="Enter serving size"
+                                   formControlName="serves_size"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-sm-3 col-form-label">
+                            <label>Calories</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input
+                                    type="number"
+                                    id="calories-id"
+                                    class="form-control"
+                                    name="calories"
+                                    placeholder="Enter calories"
+                                    formControlName="calories"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12">
+
+        <div class="divider">
+            <div class="divider-text"><b>Add nutrients detail below</b></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <tree-root #tree [nodes]="nodes" [options]="options"
+                   (activate)="onActivateNode($event)">
+            <ng-template #treeNodeTemplate let-node let-index="index">
+
+                <div class="tree-node-content">
+                    <table style="width: 100%">
+                        <tbody>
+                            <tr *ngIf="node.data.name!=='root1'">
+                                <td style="width: 50%;">
+                                    <b *ngIf="node.data.isBold">{{node.data.name}}</b>
+                                    <span *ngIf="!node.data.isBold">{{node.data.name}}</span>
+                                    <span *ngIf="node.data.name!=='root1'" style="padding-left: 7px;">{{node.data.amount}}</span>
+                                </td>
+                                <td style="width: 30%;text-align: right;">
+                                    <b style="padding-right: 7px;">{{node.data.dailyAmount}}</b>
+                                </td>
+                                <td style="width: 20%;text-align: right;">
+                                    <a class="" *ngIf="node.data.name!=='root1'" href="javascript:void(0);"
+                                       (click)="openDetailModel(addDetails)">
+                                        <i data-feather="plus-circle" size="20" class="mr-50"></i>
+                                    </a>
+                                    <a class=" " *ngIf="node.data.name!=='root1'" href="javascript:void(0);"
+                                       (click)="openDetailModel(editDetails,node)">
+                                        <i data-feather="edit" size="20" class="mr-50 "></i>
+                                    </a>
+                                    <a class=" btn-icon btn-flat-danger" *ngIf="node.data.name!=='root1'" href="javascript:void(0);"
+                                       (click)="deleteNode(node,tree)">
+                                        <i data-feather="trash" size="20" class="mr-50 "></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                        <div class="d-flex">
+                            <span *ngIf="node.data.name=='root1'">#</span>
+                            <button *ngIf="node.data.name=='root1'" class="btn btn-primary btn-sm" type="button"
+                                    (click)="openDetailModel(addDetails)">Add
+                            </button>
+
+                        </div>
+                </div>
+
+                <ng-template #addDetails let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel1">Add Details</h4>
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click');resetForm()"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form [formGroup]="addNewNodeForm" (ngSubmit)="addNode(node)" class="form form-horizontal">
+                        <div class="modal-body" tabindex="0">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <!--                                            <input type="text" id="item-name-id" class="form-control" name="item-name"-->
+                                            <!--                                                   placeholder="Item Name"-->
+                                            <!--                                                   formControlName="name"/>-->
+                                            <ng-select [items]="nutrients"
+                                                       bindLabel="name"
+                                                       bindValue="name"
+                                                       formControlName="name"
+                                                       placeholder="Item Name"
+                                                       appendTo="body">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Amount</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="amount-id" class="form-control" name="amount-name"
+                                                   placeholder="Amount"
+                                                   formControlName="amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Daily Value</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="number" id="daily-value-id" class="form-control"
+                                                   placeholder="Daily Value In %"
+                                                   name="daily-amount"
+                                                   formControlName="dailyAmount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9 offset-sm-3">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="is-bold-checkbox"
+                                                   name="is-bold"
+                                                   formControlName="isBold"/>
+                                            <label class="custom-control-label" for="is-bold-checkbox">Is Bold</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button [disabled]="!addNewNodeForm.valid" type="submit" class="btn btn-primary"
+                                    (click)="modal.close('Accept click');" rippleEffect>
+                                Add
+                            </button>
+                        </div>
+                    </form>
+                </ng-template>
+                <ng-template #editDetails let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel2">Add Details</h4>
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click');resetForm()"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form [formGroup]="addNewNodeForm" (ngSubmit)="editNode(node)" class="form form-horizontal">
+                        <div class="modal-body" tabindex="0">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <!--                                            <input type="text" id="item-name-id" class="form-control" name="item-name"-->
+                                            <!--                                                   placeholder="Item Name"-->
+                                            <!--                                                   formControlName="name"/>-->
+                                            <ng-select [items]="nutrients"
+                                                       bindLabel="name"
+                                                       bindValue="name"
+                                                       formControlName="name"
+                                                       placeholder="Item Name"
+                                                       appendTo="body">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Amount</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="amount-id-1" class="form-control" name="amount-name"
+                                                   placeholder="Amount"
+                                                   formControlName="amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3 col-form-label">
+                                            <label>Daily Value</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="number" id="daily-value-id-1" class="form-control"
+                                                   placeholder="Daily Value In %"
+                                                   name="daily-amount"
+                                                   formControlName="dailyAmount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9 offset-sm-3">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="is-bold-checkbox-1"
+                                                   name="is-bold"
+                                                   formControlName="isBold"/>
+                                            <label class="custom-control-label" for="is-bold-checkbox-1">Is Bold</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button [disabled]="!addNewNodeForm.valid" type="submit" class="btn btn-primary"
+                                    (click)="modal.close('Accept click');" rippleEffect>
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </ng-template>
+            </ng-template>
+        </tree-root>
+    </div>
+</div>
+
+

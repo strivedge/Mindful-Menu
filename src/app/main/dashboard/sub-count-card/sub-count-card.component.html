@@ -1,0 +1,8 @@
+<div (click)="test()" class="card" [ngStyle]="{'background':color ? color : 'none' }" style="cursor: pointer">
+    <div class="card-header d-flex justify-content-center" >
+        <div>
+            <h2 class="font-weight-bolder mb-0 text-center" [ngStyle]="{'color':textColor ? textColor : 'none' }">{{numbers}}</h2>
+            <p class="card-text text-center" [ngStyle]="{'color':textColor ? textColor : 'none' }"><b>{{title}}</b></p>
+        </div>
+    </div>
+</div>

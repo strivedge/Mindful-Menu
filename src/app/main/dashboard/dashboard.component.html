@@ -1,0 +1,83 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- Basic Alerts start -->
+        <section id="home-page">
+            <div class="row match-height">
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'#97b5d1'"
+                                        [title]="'Total Users'"
+                                        [titleValue]="'0'"
+                                        [numbers]="subCountData.total"
+                                        [textColor]="'#ffffff'">
+                    </app-sub-count-card>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'#93edab'"
+                                        [title]="'Subscribed'"
+                                        [titleValue]="'Subscribed'"
+                                        [numbers]="subCountData.subscribed"
+                                        [textColor]="'#ffffff'">
+                    </app-sub-count-card>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'#fa8070'"
+                                        [title]="'Expired Subscription'"
+                                        [titleValue]="'Subscription expired'"
+                                        [numbers]="subCountData.subExpired"
+                                        [textColor]="'#ffffff'">
+
+                    </app-sub-count-card>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'rgba(234, 190, 20, 0.7)'"
+                                        [title]="'Trial'"
+                                        [titleValue]="'Trial'"
+                                        [numbers]="subCountData.trial"
+                                        [textColor]="'#ffffff'">
+
+                    </app-sub-count-card>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'#fc9f26'"
+                                        [title]="'Trial Expired'"
+                                        [titleValue]="'Trial expired'"
+                                        [numbers]="subCountData.trialExpired"
+                                        [textColor]="'#ffffff'">
+
+                    </app-sub-count-card>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12 ">
+                    <app-sub-count-card [color]="'rgba(166,201,203,0.88)'"
+                                        [title]="'Not Sign-in'"
+                                        [titleValue]="'Not sign in'"
+                                        [numbers]="subCountData.notSignIn"
+                                        [textColor]="'#ffffff'"
+                    ></app-sub-count-card>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body pb-2">
+                            <p>
+                                At Mindful Menu, we strive to make your meal planning simple. We are mindful of your
+                                time, health, budget and family. Our goal at Mindful Menu is to take the guesswork and
+                                stress out of putting meals on your table.
+                            </p>
+                            <p>
+                                We have a dedicated and qualified team to help you make meal planning a breeze. As a
+                                member you will receive a weekly meal plan, shopping list, prep list, cooking
+                                instructions, and helpful tips from our team. Let us help you simplify mealtime.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Basic Alerts end -->
+    </div>
+</div>
+

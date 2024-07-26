@@ -1,0 +1,451 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section class="app-user-edit">
+            <form [formGroup]="mealForm" class="form-validate" (ngSubmit)="submitMeal()">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="meal-name">Meal Name *</label>
+                                    <input type="text" id="meal-name" class="form-control" placeholder="Meal Name"
+                                           formControlName="name"
+                                           [ngClass]="{'is-invalid': mealForm.controls.name.invalid  && mealForm.controls.name.touched}"/>
+                                    <div class="invalid-feedback">
+                                        Meal Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="image">Upload Image here</label>
+                                    <div class="custom-file">
+                                        <input type="file" id="image" class="custom-file-input"
+                                               (change)="uploadFile($event)">
+                                        <label class="custom-file-label" for="image">Choose file</label>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="image-input"
+                                           formControlName="image_url">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <img id="image" [src]="imageSrc" height="80" width="150"
+                                         alt="image" *ngIf="imageSrc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="prep-time">Preparation Time (*minutes)</label>
+                                            <input type="number" id="prep-time" class="form-control"
+                                                   placeholder="Time In Minutes" formControlName="preparation_time"
+                                                   [ngClass]="{'is-invalid': mealForm.controls.preparation_time.invalid  && mealForm.controls.preparation_time.touched}"/>
+                                            <div class="invalid-feedback">
+                                                Preparation Time is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="cook-time">Cook Time (*minutes)</label>
+                                            <input type="number" id="cook-time" class="form-control"
+                                                   placeholder="Time In Minutes" formControlName="cook_time"
+                                                   [ngClass]="{'is-invalid': mealForm.controls.cook_time.invalid  && mealForm.controls.cook_time.touched}"/>
+                                            <div class="invalid-feedback">
+                                                Cook Time is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="Serves">Serves</label>
+                                            <input type="number" id="Serves" class="form-control"
+                                                   placeholder="Time In Minutes" formControlName="serves"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="gluten-free"
+                                               formControlName="is_gluten_free"/>
+                                        <label class="custom-control-label" for="gluten-free">Gluten Free</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="dairy-free"
+                                               formControlName="is_dairy_free"/>
+                                        <label class="custom-control-label" for="dairy-free">Dairy Free</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="vegetarian"
+                                               formControlName="is_vegetarian"/>
+                                        <label class="custom-control-label" for="vegetarian">Vegetarian</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                            <li [ngbNavItem]="1">
+                                <a ngbNavLink>Ingredients</a>
+                                <ng-template ngbNavContent>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>Ingredients</h4>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Amount</th>
+                                                    <th>Item</th>
+                                                    <th>Category</th>
+                                                    <th>Notes</th>
+                                                    <th>Remove</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <ng-container formArrayName="ingredients">
+                                                    <ng-container
+                                                            *ngFor="let ingredientForm of ingredients.controls; let i = index">
+                                                        <tr [formGroup]="ingredientForm">
+                                                            <td>
+                                                                <div class="form-group" style="width: 100px">
+                                                                    <input type="text" class="form-control"
+                                                                           placeholder="Amount"
+                                                                           formControlName="amount"
+                                                                           [ngClass]="{'is-invalid': ingredientForm.controls.amount.invalid  && ingredientForm.controls.amount.touched}"/>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group" style="width: 300px">
+                                                                    <ng-select *ngIf="itemsList[i].map"
+                                                                               [items]="itemsList[i]"
+                                                                               addTagText="Add New Item"
+                                                                               bindLabel="name"
+                                                                               [addTag]="tagBtn"
+                                                                               bindValue="_id"
+                                                                               formControlName="item"
+                                                                               appendTo="body"
+                                                                               placeholder="Select Item"
+                                                                               (search)="getItems($event,i,ingredientForm.controls.category.value)"
+                                                                               [ngClass]="{'is-invalid': ingredientForm.controls.item.invalid &&ingredientForm.controls.item.touched }"
+                                                                               (change)="setCategory($event,i)"
+                                                                    >
+                                                                    </ng-select>
+                                                                    <div class="invalid-feedback"
+                                                                         *ngIf="ingredientForm.controls.item.invalid && ingredientForm.controls.item.touched ">
+                                                                        item is required
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group" style="width: 300px">
+                                                                    <ng-select *ngIf="categories[i].map"
+                                                                               [items]="categories[i]"
+                                                                               addTagText="Add new category"
+                                                                               [addTag]="tagBtn"
+                                                                               bindLabel="name"
+                                                                               bindValue="_id"
+                                                                               appendTo="body"
+                                                                               placeholder="Select Categories"
+                                                                               formControlName="category"
+                                                                               (search)="getCategories($event,i)"
+                                                                               [ngClass]="{'is-invalid': ingredientForm.controls.category.invalid &&ingredientForm.controls.category.touched }"
+                                                                               (change)="setItems($event,i)">
+
+                                                                    </ng-select>
+                                                                    <div class="invalid-feedback"
+                                                                         *ngIf="ingredientForm.controls.category.invalid && ingredientForm.controls.category.touched ">
+                                                                        item is required
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <div class="form-group" style="width: 200px">
+                                                                    <input type="text" class="form-control"
+                                                                           placeholder="" formControlName="notes"/>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button"
+                                                                        class="btn btn-icon btn-flat-danger  mb-1"
+                                                                        (click)="removeIngredient(i)"><span
+                                                                        [data-feather]="'trash-2'" size="25"></span>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-icon btn-flat-primary"
+                                                    (click)="addIngredient()" rippleEffect>
+                                                <span [data-feather]="'plus-square'" size="30"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="2">
+                                <a ngbNavLink>Preparation Instructions</a>
+                                <ng-template ngbNavContent>
+                                    <div class="row ">
+                                        <div class="col-md-12">
+                                            <h4>Preparation Instructions</h4>
+                                        </div>
+                                        <ng-container formArrayName="preparation_instructions">
+                                            <ng-container
+                                                    *ngFor="let preparation_instruction of preparation_instructions.controls; let i = index">
+                                                <div class="col-md-10">
+                                                    <div class="form-group" [formGroup]="preparation_instruction">
+                                                        <textarea class="form-control" rows="2"
+                                                                  formControlName="instructions"
+                                                                  [ngClass]="{'is-invalid': preparation_instruction.controls.instructions.invalid  && preparation_instruction.controls.instructions.touched}"></textarea>
+                                                        <div class="invalid-feedback">
+                                                            instructions required
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-icon btn-flat-danger  mb-1"
+                                                            (click)="removePreparationInstruction(i)"> <span
+                                                            [data-feather]="'trash-2'" size="25"></span>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-icon btn-flat-primary"
+                                                    (click)="addPreparationInstruction()" rippleEffect>
+                                                <span [data-feather]="'plus-square'" size="30"></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="3">
+                                <a ngbNavLink>Cooking Instructions</a>
+                                <ng-template ngbNavContent>
+                                    <div class="row ">
+                                        <div class="col-md-12">
+                                            <h4>Cooking Instructions</h4>
+                                        </div>
+                                        <ng-container formArrayName="cooking_instructions">
+                                            <ng-container
+                                                    *ngFor="let cooking_instruction of cooking_instructions.controls; let i = index">
+                                                <div class="col-md-10">
+                                                    <div class="form-group" [formGroup]="cooking_instruction">
+                                                        <textarea class="form-control" rows="2"
+                                                                  formControlName="instructions"
+                                                                  [ngClass]="{'is-invalid': cooking_instruction.controls.instructions.invalid  && cooking_instruction.controls.instructions.touched}"></textarea>
+                                                        <div class="invalid-feedback">
+                                                            instructions required
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-icon btn-flat-danger  mb-1"
+                                                            (click)="removeCookingInstruction(i)"> <span
+                                                            [data-feather]="'trash-2'" size="25"></span>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-icon btn-flat-primary"
+                                                    (click)="addCookingInstruction()" rippleEffect>
+                                                <span [data-feather]="'plus-square'" size="30"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="4">
+                                <a ngbNavLink>Tips</a>
+                                <ng-template ngbNavContent>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>Tips</h4>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                    <textarea class="form-control" rows="2"
+                                                              formControlName="tips"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </li>
+                            <li [ngbNavItem]="5">
+                                <a ngbNavLink>Nutrition</a>
+                                <ng-template ngbNavContent>
+                                    <app-add-nutrition [nodes]="nutrition"></app-add-nutrition>
+                                </ng-template>
+                            </li>
+                        </ul>
+                        <div [ngbNavOutlet]="nav" class="mt-2">
+
+                        </div>
+                        <div>
+                            <button type="submit" [disabled]="!mealForm.valid" class="btn btn-primary mt-2">
+                                Submit
+                            </button>
+                            <button type="button" routerLink="/meals/meals-list/" class="btn btn-flat-danger mt-2">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+
+<ng-template #categoryModal let-modal>
+    <div class="modal-header">
+        <button type="button" class="close" (click)="modal.dismiss('Cross click');reset()"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <form [formGroup]="categoryForm" class="form-validate" (ngSubmit)="categorySubmit()">
+
+            <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="text" id="categoryName" class="form-control"
+                       placeholder="Category Name" formControlName="name" required [ngClass]="{ 'is-invalid': categoryForm.controls.name.invalid && categoryForm.controls.name.touched
+                                    }"/>
+                <div class="invalid-feedback">
+                    <p *ngIf="categoryForm.controls.name.errors?.required">
+                        Name is required
+                    </p>
+                </div>
+            </div>
+            <label for="customRadio1">Status</label>
+            <div class="form-group">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadio1"
+                           formControlName="status"
+                           [value]="true"
+                           class="custom-control-input" checked/>
+                    <label class="custom-control-label" for="customRadio1">Active</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadio2"
+                           [value]="false"
+                           formControlName="status"
+                           class="custom-control-input"/>
+                    <label class="custom-control-label" for="customRadio2">InActive</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="!categoryForm.valid" type="submit"
+                        class="btn btn-primary mr-1">
+                    Submit
+                </button>
+                <button type="button" (click)="modal.dismiss('Cross click'); reset()"
+                        class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #itemModal let-modal>
+    <div class="modal-header">
+        <button type="button" class="close" (click)="modal.dismiss('Cross click');reset()"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <form [formGroup]="ItemForm" class="form-validate" (ngSubmit)="itemSubmit()">
+
+            <div class="form-group">
+                <label for="itemName">Item Name*</label>
+                <input type="text" id="itemName" class="form-control"
+                       placeholder=" Please Enter Item Name"
+                       required
+                       formControlName="name" [ngClass]="{'is-invalid': ItemForm.controls.name.invalid  &&
+                                            ItemForm.controls.name.touched}"/>
+                <div
+                        class="invalid-feedback">
+
+                    Name is required
+
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="categoryname">Category Name </label>
+                <select class="form-control" id="categoryname1" formControlName="categories_id"
+                        [ngClass]="{'is-invalid': ItemForm.controls.categories_id.invalid  &&
+                                            ItemForm.controls.categories_id.touched}" required>
+
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of allCategories" [value]="category._id">
+                        {{category.name}}
+                    </option>
+                </select>
+                <div class="invalid-feedback">
+                    Category is required
+                </div>
+            </div>
+
+            <label for="status">Status</label>
+            <div class="form-group">
+                <!-- <input formControlName="status" id="status" type="checkbox"> -->
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadio11"
+                           formControlName="status"
+                           [value]="true"
+
+                           class="custom-control-input"/>
+                    <label class="custom-control-label" for="customRadio1">Active</label>
+                </div>
+
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadio22" [value]="false"
+                           formControlName="status"
+
+                           class="custom-control-input"/>
+                    <label class="custom-control-label" for="customRadio2">InActive</label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="!ItemForm.valid" type="submit" class="btn btn-primary mr-1">
+                    Submit
+                </button>
+                <button type="button" (click)="modal.dismiss('Cross click') ; reset()"
+                        class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+</ng-template>

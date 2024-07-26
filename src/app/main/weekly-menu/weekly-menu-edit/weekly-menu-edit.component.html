@@ -1,0 +1,130 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <section class="app-user-edit">
+            <form [formGroup]="weeklyMenuForm" class="form-validate" (ngSubmit)="submitForm()">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label><b> Start Date*</b></label>
+                                    <ng2-flatpickr #startPicker formControlName="start_date"
+                                                   placeholder="select your week"
+                                                   [ngClass]="{'is-invalid': weeklyMenuForm.controls.start_date.invalid}"
+                                                   [config]="startDateOptions"
+                                    ></ng2-flatpickr>
+                                    <div class="invalid-feedback" *ngIf="weeklyMenuForm.controls.start_date.invalid">
+                                        Start Date is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label><b> End Date* </b></label>
+                                    <ng2-flatpickr #endPicker formControlName="end_date" [config]="endDateOptions"
+                                    ></ng2-flatpickr>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label><b> Publish Date* </b></label>
+                                    <ng2-flatpickr #publishPicker formControlName="publish_date"
+                                                   [ngClass]="{'is-invalid': weeklyMenuForm.controls.publish_date.invalid}"
+                                                   [config]="publishDateOptions"
+                                    ></ng2-flatpickr>
+
+                                    <div class="invalid-feedback" *ngIf="weeklyMenuForm.controls.publish_date.invalid">
+                                        Publish Date is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="image"> <b> Upload Image here </b></label>
+                                    <div class="custom-file">
+                                        <input type="file" id="image" class="custom-file-input"
+                                               (change)="uploadFile($event)">
+                                        <label class="custom-file-label" for="image">Choose file</label>
+
+                                    </div>
+                                    <input type="hidden" class="form-control" id="image-input"
+                                           formControlName="image_url">
+                                </div>
+                            </div>
+                            <div class="col-md-4 ">
+                                <div class="form-group ">
+
+                                    <img id="image" [src]="imageSrc" height="100" width="200" alt="" alt="image"
+                                         *ngIf="imageSrc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="intro-text"><b>Intro Text </b> </label>
+                                    <textarea class="form-control" formControlName="introduction" id="intro-text"
+                                              rows="3"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b> Meals*</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <ng-container formArrayName="meals">
+                                <ng-container *ngFor="let mealsForm of meals.controls; let i = index">
+                                    <div class="col-md-1 mt-2 ">
+                                        <div class="form-group">
+                                            <label for="meal-name"><b> #Meal {{i + 1}} </b></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11 mt-2">
+                                        <div class="form-group" [formGroup]="mealsForm">
+                                            <ng-select *ngIf="mealsArray[i].map" [items]="mealsArray[i]"
+                                                       bindLabel="name"
+                                                       bindValue="_id"
+                                                       formControlName="meal_id"
+                                                       placeholder="Select Meal"
+                                                       formControlName="meal_id"
+                                                       (search)="mealsSearch($event,i)"
+                                                       [ngClass]="{'is-invalid': mealsForm.controls.meal_id.invalid}"
+                                            >
+                                            </ng-select>
+                                            <div class="invalid-feedback"
+                                                 *ngIf="mealsForm.controls.meal_id.invalid && mealsForm.controls.meal_id.touched ">
+                                                Meal is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" [disabled]="!weeklyMenuForm.valid" class="btn btn-primary">
+                                    Submit
+                                </button>
+                                <button type="button" (click)="reset()" class="btn btn-flat-danger">Cancel</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+            <!-- </div> -->
+        </section>
+
+    </div>
+</div>

@@ -1,0 +1,175 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- page users view start -->
+        <section>
+            <div class="row match-height">
+                <!-- User Card starts-->
+                <div class=" col-md-8">
+                    <div class="card ">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                                    <div class="user-avatar-section">
+                                        <div class="d-flex justify-content-start">
+                                            <div>
+                                                <img class="img-fluid rounded" src="assets/images/avatars/10.png"
+                                                     height="104" width="104" alt="User avatar"/>
+                                            </div>
+                                            <!--                                            <ng-template #customAvatar>-->
+                                            <!--                                                <div class="mr-1 ml-0">-->
+                                            <!--                                                    <div-->
+                                            <!--                                                            [ngClass]="{-->
+                                            <!--                                      'bg-light-success': data.status == 'active',-->
+                                            <!--                                      'bg-light-secondary': data.status == 'inactive',-->
+                                            <!--                                      'bg-light-warning': data.status == 'pending'-->
+                                            <!--                                    }"-->
+                                            <!--                                                            class="rounded p-3"-->
+                                            <!--                                                    >-->
+                                            <!--                                                        <h2-->
+                                            <!--                                                                [ngClass]="{-->
+                                            <!--                                        'text-success': data.status == 'active',-->
+                                            <!--                                        'text-secondary': data.status == 'inactive',-->
+                                            <!--                                        'text-warning': data.status == 'pending'-->
+                                            <!--                                      }"-->
+                                            <!--                                                                class="m-0"-->
+                                            <!--                                                        >-->
+                                            <!--                                                            User-->
+                                            <!--                                                        </h2>-->
+                                            <!--                                                    </div>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </ng-template>-->
+                                            <div class="d-flex flex-column ml-1">
+                                                <div class="user-info mb-1">
+                                                    <h4 class="mb-0">{{userItem.first_name}}  {{userItem.last_name}}</h4>
+                                                    <span class="card-text">{{userItem.email}}</span>
+                                                </div>
+                                                <div class="d-flex ">
+                                                    <a routerLink="/users/edit/{{userItem._id}}"
+                                                       [state]="{name:'viraj'}" class="btn btn-dark" rippleEffect
+                                                    >Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
+                                    <div class="user-info-wrapper">
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="user" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Name</span>
+                                            </div>
+                                            <p class="card-text mb-0 ml-1">{{userItem.first_name}}  {{userItem.last_name}}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap my-50">
+                                            <div class="user-info-title">
+                                                <i data-feather="check" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Status</span>
+                                            </div>
+                                            <p class="card-text mb-0 ml-1">{{userItem.status ? "Active" : "InActive"}}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap my-50">
+                                            <div class="user-info-title">
+                                                <i data-feather="star" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Role</span>
+                                            </div>
+                                            <p class="card-text mb-0 ml-1">{{userItem.role}}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap my-50">
+                                            <div class="user-info-title">
+                                                <i data-feather="flag" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Country</span>
+                                            </div>
+                                            <p class="card-text mb-0 ml-1">US</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="phone" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Contact</span>
+                                            </div>
+                                            <p class="card-text mb-0 ml-1">{{userItem.mobile}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /User Card Ends-->
+
+                <!-- Plan Card starts-->
+                <div class=" col-md-4">
+                    <div class="card ">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-end">
+                                <button type="button"
+                                        class="btn btn-icon "
+                                        (click)="addTrialModel()"
+                                        rippleEffect>
+                                    <span [data-feather]="'edit'"></span></button>
+                            </div>
+                            <div class="row text-center mb-2">
+                                <div class="col-sm-6 col-6">
+                                    <h5>Current Plan</h5>
+                                    <div class="badge badge-light-dark">{{currentPlan['plan'] ? currentPlan['plan'] : currentPlan['isTrial'] ? 'Trial' : 'Not Subscribed'}}</div>
+                                </div>
+                                <div class="col-sm-6 col-6">
+                                    <h5>Valid Till</h5>
+                                    <span class="badge badge-light-dark" data-toggle="tooltip" data-placement="top"
+                                          title="Expiry Date">{{currentPlan['expirationDate'] ? (currentPlan['expirationDate'] |date) : 'Detail not available' }}</span>
+
+                                </div>
+
+                            </div>
+                            <ul class="list-unstyled my-1">
+                                <li>
+                                    <span> Start Date : {{currentPlan['purchaseDate'] ? (currentPlan['purchaseDate']|date) : 'Detail not available'}}</span>
+                                </li>
+                                <li>
+                                    <span>Payment Mode : {{currentPlan['platform'] ? currentPlan['platform'] : 'Detail not available'}}</span>
+                                </li>
+                            </ul>
+                            <button class="btn btn-sm btn-secondary text-center btn-block"
+                                    (click)="historyToggle=!historyToggle" rippleEffect>Show more app
+                                purchase history
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <section id="sub-history" *ngIf="historyToggle">
+            <div class="card">
+                <ngx-datatable
+                        class="bootstrap core-bootstrap"
+                        [rows]="purchaseHistory"
+                        [rowHeight]="'auto'"
+                        [columnMode]="ColumnMode.force"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [scrollbarH]="true"
+                        [limit]="10"
+                        [sorts]="[{ prop: 'purchaseDate', dir: 'desc' }]"
+                >
+                    <ngx-datatable-column name="Plan" prop="plan"></ngx-datatable-column>
+                    <ngx-datatable-column name="Start Date" prop="purchaseDate">
+                        <ng-template let-start="value" ngx-datatable-cell-template>
+                            {{start|date}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Expiry Date" prop="expirationDate">
+                        <ng-template let-end="value" ngx-datatable-cell-template>
+                            {{end|date}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Payment Mode" prop="platform"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </section>
+    </div>
+</div>
