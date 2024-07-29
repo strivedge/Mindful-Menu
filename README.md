@@ -8,11 +8,19 @@ The App offers a list of curated reciepes by nutritionists along with ingredient
 
 Key Features:
 -Weekly customizable menu featuring 7 healthy, friendly meals.
+
 -Recipes which are Dairy free, gluten free and have vegetarian options.
+
 -Ability to search for recipes and make it as favorite.
+
 -Users can add your own personal notes to recipes.
+
 -Multiple ingredients automatically combined for an easier shopping experience.
+
 -Users can make shopping list to make purchase online.
+
+
+
 
 
 
