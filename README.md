@@ -1,3 +1,23 @@
+Mindful Menu:
+
+Meal Planning made simple.
+
+A Platform designed to  make your meal planning simple. We are mindful of your time, health, budget and family. Mindful Menu was created to stress out of putting nutritious meals on your table.
+
+The App offers a list of curated reciepes by nutritionists along with ingredients required to make the meal.
+
+Key Features:
+-Weekly customizable menu featuring 7 healthy, friendly meals.
+-Recipes which are Dairy free, gluten free and have vegetarian options.
+-Ability to search for recipes and make it as favorite.
+-Users can add your own personal notes to recipes.
+-Multiple ingredients automatically combined for an easier shopping experience.
+-Users can make shopping list to make purchase online.
+
+
+
+
+
 # Vuexy - Angular Admin Template
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
